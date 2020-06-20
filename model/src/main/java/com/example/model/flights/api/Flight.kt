@@ -1,4 +1,6 @@
-package com.example.model.flights
+package com.example.model.flights.api
+
+import java.io.Serializable
 
 data class Flight(
     var faresLeft : Int?,
@@ -10,4 +12,4 @@ data class Flight(
     var time : List<String>?,
     var timeUTC : List<String>?,
     var duration : String?
-)
+) : Serializable

@@ -1,4 +1,4 @@
-package com.example.model.airports
+package com.example.model.airports.api
 
 data class Market(
     var code : String?,

@@ -1,4 +1,6 @@
-package com.example.model.flights
+package com.example.model.flights.api
+
+import java.io.Serializable
 
 data class Segment(
     var segmentNr : Int?,
@@ -8,4 +10,4 @@ data class Segment(
     var time : List<String>?,
     var timeUTC : List<String>?,
     var duration : String?
-)
+) : Serializable

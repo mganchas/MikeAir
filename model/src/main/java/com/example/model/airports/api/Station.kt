@@ -1,6 +1,4 @@
-package com.example.model.airports
-
-import com.example.model.airports.Market
+package com.example.model.airports.api
 
 data class Station(
     var code : String?,

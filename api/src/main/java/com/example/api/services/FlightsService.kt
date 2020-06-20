@@ -1,6 +1,6 @@
 package com.example.api.services
 
-import com.example.model.flights.FlightSearch
+import com.example.model.flights.api.FlightSearch
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

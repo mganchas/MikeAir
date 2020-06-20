@@ -13,7 +13,12 @@
     <string name="label_search_teens">Number of teens</string>
     <string name="label_search_children">Number of children</string>
     <string name="label_search_action">Search</string>
+    <string name="label_no_results">Sorry, no results</string>
+    <string name="label_details_title">Flight information</string>
 
     <string name="toast_generic_error">Something went wrong. Please, try again</string>
-    <string name="toast_missing_fields_error">Please, fill all fields</string>
+    <string name="toast_invalid_fields_error">Please, fill all fields with valid values</string>
+
+    <string name="intent_key_flight_results">intent_key_flight_results</string>
+    <string name="intent_key_flight_details">intent_key_flight_details</string>
 </resources>
