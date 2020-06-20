@@ -10,12 +10,15 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mikeair.R
+import com.example.mikeair.utils.ScopeUtils
 import com.example.mikeair.utils.ToastUtils
 import com.example.model.flights.api.Flight
 import com.example.model.flights.app.FlightDetails
 import com.example.model.flights.api.FlightSearch
 import com.example.model.flights.app.FlightResult
 import com.example.model.flights.app.FlightResults
+import com.google.android.material.slider.Slider
+import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class FlightResultsActivity : AppCompatActivity() {
@@ -33,10 +36,12 @@ class FlightResultsActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var toolbar: Toolbar
+    private lateinit var priceSlider : Slider
 
     private lateinit var listAdapter: FlightResultsAdapter
 
     private lateinit var flightResults: FlightResults
+    private var priceFilter = 0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +50,7 @@ class FlightResultsActivity : AppCompatActivity() {
         getIncomingData()
         prepareLayout()
         setToolbar()
+        setSliderListener()
         fillRecyclerView()
     }
 
@@ -68,6 +74,7 @@ class FlightResultsActivity : AppCompatActivity() {
         Log.d(TAG, "prepareLayout()")
         recyclerView = findViewById(R.id.results)
         toolbar = findViewById(R.id.toolbar)
+        priceSlider = findViewById(R.id.priceSlider)
     }
 
     private fun setToolbar() {
@@ -80,18 +87,46 @@ class FlightResultsActivity : AppCompatActivity() {
         }
     }
 
+    private fun setSliderListener() {
+        Log.d(TAG, "setSliderListener()")
+
+        priceFilter = resources.getInteger(R.integer.default_price_filter).toFloat()
+        priceSlider.value = priceFilter
+        priceSlider.addOnChangeListener { _, value, fromUser ->
+            Log.d(TAG, "setSliderListener().onValueChanged() value: $value | fromUser: $fromUser")
+            if (!fromUser) {
+                return@addOnChangeListener
+            }
+
+            priceFilter = value
+            updateFlightsWithPriceFilter()
+        }
+    }
+
     private fun fillRecyclerView() {
         Log.d(TAG, "fillRecyclerView()")
         listAdapter = FlightResultsAdapter(this, flightResults.currency) {
             goToDetailsPage(it)
         }
-        listAdapter.setFlights(flightResults.results)
+        updateFlights()
 
         recyclerView.run {
             adapter = listAdapter
             layoutManager = LinearLayoutManager(this@FlightResultsActivity)
             setHasFixedSize(true)
         }
+    }
+
+    private fun updateFlights() = ScopeUtils.defaultScope().launch {
+        Log.d(TAG, "updateFlights()")
+        listAdapter.setFlights(flightResults.results)
+    }
+
+    private fun updateFlightsWithPriceFilter() = ScopeUtils.defaultScope().launch {
+        Log.d(TAG, "updateFlightsWithPriceFilter()")
+        listAdapter.setFlights(
+            flightResults.results.filter { it.farePrice > priceFilter }
+        )
     }
 
     private fun goToDetailsPage(selectedFlight: FlightResult) {

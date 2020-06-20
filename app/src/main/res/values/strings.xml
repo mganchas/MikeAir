@@ -13,7 +13,7 @@
     <string name="label_search_teens">Number of teens</string>
     <string name="label_search_children">Number of children</string>
     <string name="label_search_action">Search</string>
-    <string name="label_no_results">Sorry, no results</string>
+    <string name="label_results_price_filter">Price filter</string>
     <string name="label_details_title">Flight information</string>
 
     <string name="toast_generic_error">Something went wrong. Please, try again</string>

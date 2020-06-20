@@ -479,8 +479,8 @@ class FlightSearchActivity : AppCompatActivity() {
                                         fares = listOf(
                                             Fare(
                                                 type = "type",
-                                                amount = 23.3,
-                                                discountInPercent = 0.25,
+                                                amount = 980.2,
+                                                discountInPercent = 0.0,
                                                 count = 1,
                                                 hasDiscount = true,
                                                 hasPromoDiscount = true,
@@ -526,8 +526,8 @@ class FlightSearchActivity : AppCompatActivity() {
                                         fares = listOf(
                                             Fare(
                                                 type = "type",
-                                                amount = 23.3,
-                                                discountInPercent = 0.25,
+                                                amount = 225.0,
+                                                discountInPercent = 66.0,
                                                 count = 1,
                                                 hasDiscount = true,
                                                 hasPromoDiscount = true,
@@ -573,8 +573,8 @@ class FlightSearchActivity : AppCompatActivity() {
                                         fares = listOf(
                                             Fare(
                                                 type = "type",
-                                                amount = 23.3,
-                                                discountInPercent = 0.25,
+                                                amount = 663.35,
+                                                discountInPercent = 0.0,
                                                 count = 1,
                                                 hasDiscount = true,
                                                 hasPromoDiscount = true,
@@ -620,8 +620,8 @@ class FlightSearchActivity : AppCompatActivity() {
                                         fares = listOf(
                                             Fare(
                                                 type = "type",
-                                                amount = 23.3,
-                                                discountInPercent = 0.25,
+                                                amount = 500.0,
+                                                discountInPercent = 0.0,
                                                 count = 1,
                                                 hasDiscount = true,
                                                 hasPromoDiscount = true,

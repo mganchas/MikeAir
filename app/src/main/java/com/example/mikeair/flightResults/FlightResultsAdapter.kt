@@ -36,13 +36,11 @@ class FlightResultsAdapter(
         (holder as FlightViewHolder).bind(currentFlight, onItemClick)
     }
 
-    fun setFlights(flightList: List<FlightResult>) = ScopeUtils.defaultScope().launch {
+    fun setFlights(flightList: List<FlightResult>) = ScopeUtils.mainScope().launch {
         synchronized(this) {
             flights = flightList
         }
-        withContext(Dispatchers.Main) {
-            notifyDataSetChanged()
-        }
+        notifyDataSetChanged()
     }
 
     inner class FlightViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
