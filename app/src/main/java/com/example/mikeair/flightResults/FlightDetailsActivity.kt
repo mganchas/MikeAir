@@ -69,6 +69,10 @@ class FlightDetailsActivity : AppCompatActivity() {
         Log.d(TAG, "setToolbar()")
         toolbar.title = flightDetails.flightNumber
         setSupportActionBar(toolbar)
+        supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setDisplayShowHomeEnabled(true)
+        }
     }
 
     private fun fillLayout() {

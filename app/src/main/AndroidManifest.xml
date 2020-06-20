@@ -13,8 +13,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".flightSearch.FlightSearchActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,8 +24,9 @@
 
         <activity
             android:name=".flightResults.FlightResultsActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:parentActivityName=".flightSearch.FlightSearchActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,8 +36,9 @@
 
         <activity
             android:name=".flightResults.FlightDetailsActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:parentActivityName=".flightResults.FlightResultsActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

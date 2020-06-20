@@ -74,6 +74,10 @@ class FlightResultsActivity : AppCompatActivity() {
         Log.d(TAG, "setToolbar()")
         toolbar.title = "${flightResults.origin} -> ${flightResults.destination}"
         setSupportActionBar(toolbar)
+        supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setDisplayShowHomeEnabled(true)
+        }
     }
 
     private fun fillRecyclerView() {

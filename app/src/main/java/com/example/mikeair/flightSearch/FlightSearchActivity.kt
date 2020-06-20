@@ -234,6 +234,7 @@ class FlightSearchActivity : AppCompatActivity() {
             goToResultsPage()
         }
         catch (e: Exception) {
+            e.printStackTrace()
             showGenericError()
         }
         finally {
