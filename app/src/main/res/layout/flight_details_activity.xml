@@ -12,7 +12,7 @@
         android:elevation="4dp"
         android:theme="@style/MyThemeOverlay_Toolbar"
         app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <TextView
         android:id="@+id/title"
@@ -27,139 +27,79 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintWidth_percent="0.8" />
 
-    <LinearLayout
-        android:id="@+id/originLayout"
+    <TextView
+        android:id="@+id/origin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/details_text_margin_top"
+        android:drawableStart="@drawable/ic_plane"
+        android:drawablePadding="@dimen/details_text_drawable_padding"
+        android:drawableTint="@color/colorPrimary"
+        android:textColor="@color/colorGrayDark"
+        android:textSize="@dimen/details_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintWidth_percent="0.7">
+        app:layout_constraintWidth_percent="0.7" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_plane"
-            android:tint="@color/colorPrimary" />
-
-        <TextView
-            android:id="@+id/origin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:textColor="@color/colorGrayDark"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/destinationLayout"
+    <TextView
+        android:id="@+id/destination"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/details_text_margin_top"
+        android:drawableStart="@drawable/ic_plane"
+        android:drawablePadding="@dimen/details_text_drawable_padding"
+        android:drawableTint="@color/colorPrimary"
+        android:textColor="@color/colorGrayDark"
+        android:textSize="@dimen/details_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/originLayout"
-        app:layout_constraintWidth_percent="0.7">
+        app:layout_constraintTop_toBottomOf="@id/origin"
+        app:layout_constraintWidth_percent="0.7" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_plane"
-            android:tint="@color/colorPrimary" />
-
-        <TextView
-            android:id="@+id/destination"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:textColor="@color/colorGrayDark"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/infantsLeftLayout"
+    <TextView
+        android:id="@+id/infantsLeft"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/details_text_margin_top"
+        android:drawableStart="@drawable/ic_child"
+        android:drawablePadding="@dimen/details_text_drawable_padding"
+        android:drawableTint="@color/colorPrimary"
+        android:textColor="@color/colorGrayDark"
+        android:textSize="@dimen/details_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/destinationLayout"
-        app:layout_constraintWidth_percent="0.7">
+        app:layout_constraintTop_toBottomOf="@id/destination"
+        app:layout_constraintWidth_percent="0.7" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_child"
-            android:tint="@color/colorPrimary" />
-
-        <TextView
-            android:id="@+id/infantsLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:textColor="@color/colorGrayDark"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/fareLayout"
+    <TextView
+        android:id="@+id/fareClass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/details_text_margin_top"
+        android:drawableStart="@drawable/ic_fare"
+        android:drawablePadding="@dimen/details_text_drawable_padding"
+        android:drawableTint="@color/colorPrimary"
+        android:textColor="@color/colorGrayDark"
+        android:textSize="@dimen/details_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/infantsLeftLayout"
-        app:layout_constraintWidth_percent="0.7">
+        app:layout_constraintTop_toBottomOf="@id/infantsLeft"
+        app:layout_constraintWidth_percent="0.7" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_fare"
-            android:tint="@color/colorPrimary" />
-
-        <TextView
-            android:id="@+id/fareClass"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:textColor="@color/colorGrayDark"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/discountLayout"
+    <TextView
+        android:id="@+id/discount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/details_text_margin_top"
+        android:drawableStart="@drawable/ic_discount"
+        android:drawablePadding="@dimen/details_text_drawable_padding"
+        android:drawableTint="@color/colorPrimary"
+        android:textColor="@color/colorGrayDark"
+        android:textSize="@dimen/details_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fareLayout"
-        app:layout_constraintWidth_percent="0.7">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_discount"
-            android:tint="@color/colorPrimary" />
-
-        <TextView
-            android:id="@+id/discount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:textColor="@color/colorGrayDark"
-            android:textSize="18sp" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/fareClass"
+        app:layout_constraintWidth_percent="0.7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

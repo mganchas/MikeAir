@@ -1,6 +1,5 @@
 package com.example.model.flights.api
 
-import com.example.model.flights.api.Fare
 import java.io.Serializable
 
 data class RegularFare(

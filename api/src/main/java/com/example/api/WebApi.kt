@@ -16,7 +16,7 @@ class WebApi
                 .build()
         }
 
-        val stationsService = apiInstance.create(StationsService::class.java)
-        val flightsService = apiInstance.create(FlightsService::class.java)
+        val stationsService: StationsService = apiInstance.create(StationsService::class.java)
+        val flightsService: FlightsService = apiInstance.create(FlightsService::class.java)
     }
 }

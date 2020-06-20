@@ -3,24 +3,16 @@ package com.example.mikeair.flightResults
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.mikeair.R
 import com.example.mikeair.databinding.FlightResultsActivityBinding
 import com.example.mikeair.utils.ScopeUtils
 import com.example.mikeair.utils.ToastUtils
-import com.example.model.flights.api.Flight
 import com.example.model.flights.app.FlightDetails
-import com.example.model.flights.api.FlightSearch
 import com.example.model.flights.app.FlightResult
 import com.example.model.flights.app.FlightResults
-import com.google.android.material.slider.Slider
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class FlightResultsActivity : AppCompatActivity() {
     companion object {

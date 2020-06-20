@@ -6,9 +6,6 @@
     <string name="label_search_origin_station">Origin station</string>
     <string name="label_search_destination_station">Destination station</string>
     <string name="label_search_departure_date">Departure date</string>
-    <string name="label_date_dd">dd</string>
-    <string name="label_date_mm">mm</string>
-    <string name="label_date_yyyy">yyyy</string>
     <string name="label_search_adults">Number of adults</string>
     <string name="label_search_teens">Number of teens</string>
     <string name="label_search_children">Number of children</string>

@@ -4,9 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.api.WebApi
 import com.example.mikeair.R
 import com.example.mikeair.databinding.FlightSearchActivityBinding
@@ -19,22 +18,28 @@ import com.example.model.airports.app.StationList
 import com.example.model.flights.api.*
 import com.example.model.flights.app.FlightResult
 import com.example.model.flights.app.FlightResults
-import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
 import java.util.*
 
 class FlightSearchActivity : AppCompatActivity() {
     companion object {
         private val TAG = FlightSearchActivity::class.java.simpleName
+
         private const val defaultRoundTrip = false
         private const val defaultToUs = "AGREED"
         private const val defaultFlexDays = 3
+
+        private const val bundleKeyOrigin = "bundleKeyOrigin"
+        private const val bundleKeyDestination = "bundleKeyDestination"
+        private const val bundleKeyDepartureDate = "bundleKeyDepartureDate"
+        private const val bundleKeyAdults = "bundleKeyAdults"
+        private const val bundleKeyTeens = "bundleKeyTeens"
+        private const val bundleKeyChildren = "bundleKeyChildren"
     }
 
     private val flightResultsKey: String by lazy {
@@ -52,7 +57,6 @@ class FlightSearchActivity : AppCompatActivity() {
 
     var stations = listOf<Station>()
     private lateinit var flightApiData: FlightSearch
-    private lateinit var flightResults: FlightResults
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +66,52 @@ class FlightSearchActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
+        if (savedInstanceState != null) {
+            onRestoreInstanceState(savedInstanceState)
+        }
+
         setDepartureDateCalendar()
         setSearchButton()
         getStations()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume()")
+
+        if (stations.isEmpty()) {
+            Log.d(TAG, "onResume() stations empty")
+            getStations()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        Log.d(TAG, "onSaveInstanceState()")
+
+        outState.run {
+            putString(bundleKeyOrigin, originStation)
+            putString(bundleKeyDestination, destinationStation)
+            putSerializable(bundleKeyDepartureDate, departureDate)
+            putSerializable(bundleKeyAdults, adults)
+            putSerializable(bundleKeyTeens, teens)
+            putSerializable(bundleKeyChildren, children)
+        }
+
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        Log.d(TAG, "onRestoreInstanceState()")
+
+        with(savedInstanceState) {
+            originStation = this.getString(bundleKeyOrigin)
+            destinationStation = this.getString(bundleKeyDestination)
+            departureDate = this.getSerializable(bundleKeyDepartureDate) as Date?
+            adults = this.getSerializable(bundleKeyAdults) as Int?
+            teens = this.getSerializable(bundleKeyTeens) as Int?
+            children = this.getSerializable(bundleKeyChildren) as Int?
+        }
     }
 
     private fun setSearchButton() {
@@ -183,13 +230,8 @@ class FlightSearchActivity : AppCompatActivity() {
 
                     val responseResult = response.body()
                     if (responseResult == null) {
-                        /*onLoadingFinished()
-                        showGenericError()*/
-
-                        // TODO: remove (only for dummy tests)
-                        flightApiData = getDummyData()
-                        handleSearchResult()
-
+                        onLoadingFinished()
+                        showGenericError()
                         return
                     }
 
@@ -209,10 +251,10 @@ class FlightSearchActivity : AppCompatActivity() {
         Log.d(TAG, "handleSearchResult()")
 
         try {
-            withContext(Dispatchers.Default) {
+            val flightResults = withContext(Dispatchers.Default) {
                 transformApiResponseIntoResults()
             }
-            goToResultsPage()
+            goToResultsPage(flightResults)
         }
         catch (e: Exception) {
             e.printStackTrace()
@@ -223,7 +265,7 @@ class FlightSearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun transformApiResponseIntoResults() {
+    private fun transformApiResponseIntoResults() : FlightResults {
         Log.d(TAG, "transformApiResponseIntoResults()")
 
         val results = mutableListOf<FlightResult>()
@@ -245,7 +287,7 @@ class FlightSearchActivity : AppCompatActivity() {
             }
         }
 
-        flightResults = FlightResults(
+        return FlightResults(
             origin = originStation!!,
             destination = destinationStation!!,
             currency = flightApiData.currency!!,
@@ -316,7 +358,7 @@ class FlightSearchActivity : AppCompatActivity() {
         return false
     }
 
-    private fun goToResultsPage() {
+    private fun goToResultsPage(flightResults : FlightResults) {
         Log.d(TAG, "goToResultsPage()")
         val intent = Intent(this, FlightResultsActivity::class.java).apply {
             putExtra(flightResultsKey, flightResults)
@@ -375,264 +417,5 @@ class FlightSearchActivity : AppCompatActivity() {
     private fun hideLoading() {
         Log.d(TAG, "hideLoading()")
         binding.loadingLayout.visibility = View.GONE
-    }
-
-    private fun getDummyData(): FlightSearch {
-        return FlightSearch(
-            termsOfUse = "termsOfUse",
-            currency = "EUR",
-            currPrecision = "currPrecision",
-            serverTimeUTC = "serverTimeUTC",
-            trips = listOf(
-                Trip(
-                    origin = "origin",
-                    originName = "originName",
-                    destination = "destination",
-                    destinationName = "destinationName",
-                    dates = listOf(
-                        FlightDate(
-                            dateOut = "dateOut",
-                            flights = listOf(
-                                Flight(
-                                    faresLeft = 2,
-                                    flightKey = "flightKey",
-                                    infantsLeft = 0,
-                                    duration = "01:25",
-                                    flightNumber = "TP 1234",
-                                    timeUTC = listOf(
-                                        "2020/12/01",
-                                        "2020/12/02"
-                                    ),
-                                    time = listOf(
-                                        "2020/12/01",
-                                        "2020/12/02"
-                                    ),
-                                    regularFare = RegularFare(
-                                        fareKey = "fareKey",
-                                        fareClass = "fareClass",
-                                        fares = listOf(
-                                            Fare(
-                                                type = "type",
-                                                amount = 23.3,
-                                                discountInPercent = 0.25,
-                                                count = 1,
-                                                hasDiscount = true,
-                                                hasPromoDiscount = true,
-                                                publishedFare = 22.0
-                                            )
-                                        )
-                                    ),
-                                    segments = listOf(
-                                        Segment(
-                                            segmentNr = 12,
-                                            flightNumber = "TP 1234",
-                                            duration = "01:25",
-                                            destination = "destination",
-                                            origin = "origin",
-                                            timeUTC = listOf(
-                                                "2020/12/01",
-                                                "2020/12/02"
-                                            ),
-                                            time = listOf(
-                                                "2020/12/01",
-                                                "2020/12/02"
-                                            )
-                                        )
-                                    )
-                                ),
-                                Flight(
-                                    faresLeft = 2,
-                                    flightKey = "flightKey",
-                                    infantsLeft = 0,
-                                    duration = "01:25",
-                                    flightNumber = "TP 1234",
-                                    timeUTC = listOf(
-                                        "2020/12/01",
-                                        "2020/12/02"
-                                    ),
-                                    time = listOf(
-                                        "2020/12/01",
-                                        "2020/12/02"
-                                    ),
-                                    regularFare = RegularFare(
-                                        fareKey = "fareKey",
-                                        fareClass = "fareClass",
-                                        fares = listOf(
-                                            Fare(
-                                                type = "type",
-                                                amount = 980.2,
-                                                discountInPercent = 0.0,
-                                                count = 1,
-                                                hasDiscount = true,
-                                                hasPromoDiscount = true,
-                                                publishedFare = 22.0
-                                            )
-                                        )
-                                    ),
-                                    segments = listOf(
-                                        Segment(
-                                            segmentNr = 12,
-                                            flightNumber = "TP 1234",
-                                            duration = "01:25",
-                                            destination = "destination",
-                                            origin = "origin",
-                                            timeUTC = listOf(
-                                                "2020/12/01",
-                                                "2020/12/02"
-                                            ),
-                                            time = listOf(
-                                                "2020/12/01",
-                                                "2020/12/02"
-                                            )
-                                        )
-                                    )
-                                ),
-                                Flight(
-                                    faresLeft = 2,
-                                    flightKey = "flightKey",
-                                    infantsLeft = 0,
-                                    duration = "01:25",
-                                    flightNumber = "TP 1234",
-                                    timeUTC = listOf(
-                                        "2020/12/01",
-                                        "2020/12/02"
-                                    ),
-                                    time = listOf(
-                                        "2020/12/01",
-                                        "2020/12/02"
-                                    ),
-                                    regularFare = RegularFare(
-                                        fareKey = "fareKey",
-                                        fareClass = "fareClass",
-                                        fares = listOf(
-                                            Fare(
-                                                type = "type",
-                                                amount = 225.0,
-                                                discountInPercent = 66.0,
-                                                count = 1,
-                                                hasDiscount = true,
-                                                hasPromoDiscount = true,
-                                                publishedFare = 22.0
-                                            )
-                                        )
-                                    ),
-                                    segments = listOf(
-                                        Segment(
-                                            segmentNr = 12,
-                                            flightNumber = "TP 1234",
-                                            duration = "01:25",
-                                            destination = "destination",
-                                            origin = "origin",
-                                            timeUTC = listOf(
-                                                "2020/12/01",
-                                                "2020/12/02"
-                                            ),
-                                            time = listOf(
-                                                "2020/12/01",
-                                                "2020/12/02"
-                                            )
-                                        )
-                                    )
-                                ),
-                                Flight(
-                                    faresLeft = 2,
-                                    flightKey = "flightKey",
-                                    infantsLeft = 0,
-                                    duration = "01:25",
-                                    flightNumber = "TP 1234",
-                                    timeUTC = listOf(
-                                        "2020/12/01",
-                                        "2020/12/02"
-                                    ),
-                                    time = listOf(
-                                        "2020/12/01",
-                                        "2020/12/02"
-                                    ),
-                                    regularFare = RegularFare(
-                                        fareKey = "fareKey",
-                                        fareClass = "fareClass",
-                                        fares = listOf(
-                                            Fare(
-                                                type = "type",
-                                                amount = 663.35,
-                                                discountInPercent = 0.0,
-                                                count = 1,
-                                                hasDiscount = true,
-                                                hasPromoDiscount = true,
-                                                publishedFare = 22.0
-                                            )
-                                        )
-                                    ),
-                                    segments = listOf(
-                                        Segment(
-                                            segmentNr = 12,
-                                            flightNumber = "TP 1234",
-                                            duration = "01:25",
-                                            destination = "destination",
-                                            origin = "origin",
-                                            timeUTC = listOf(
-                                                "2020/12/01",
-                                                "2020/12/02"
-                                            ),
-                                            time = listOf(
-                                                "2020/12/01",
-                                                "2020/12/02"
-                                            )
-                                        )
-                                    )
-                                ),
-                                Flight(
-                                    faresLeft = 2,
-                                    flightKey = "flightKey",
-                                    infantsLeft = 0,
-                                    duration = "01:25",
-                                    flightNumber = "TP 1234",
-                                    timeUTC = listOf(
-                                        "2020/12/01",
-                                        "2020/12/02"
-                                    ),
-                                    time = listOf(
-                                        "2020/12/01",
-                                        "2020/12/02"
-                                    ),
-                                    regularFare = RegularFare(
-                                        fareKey = "fareKey",
-                                        fareClass = "fareClass",
-                                        fares = listOf(
-                                            Fare(
-                                                type = "type",
-                                                amount = 500.0,
-                                                discountInPercent = 0.0,
-                                                count = 1,
-                                                hasDiscount = true,
-                                                hasPromoDiscount = true,
-                                                publishedFare = 22.0
-                                            )
-                                        )
-                                    ),
-                                    segments = listOf(
-                                        Segment(
-                                            segmentNr = 12,
-                                            flightNumber = "TP 1234",
-                                            duration = "01:25",
-                                            destination = "destination",
-                                            origin = "origin",
-                                            timeUTC = listOf(
-                                                "2020/12/01",
-                                                "2020/12/02"
-                                            ),
-                                            time = listOf(
-                                                "2020/12/01",
-                                                "2020/12/02"
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
     }
 }

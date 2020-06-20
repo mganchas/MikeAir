@@ -4,6 +4,7 @@
     <bytecodeTargetLevel>
       <module name="api" target="1.7" />
       <module name="model" target="1.7" />
+      <module name="persistence" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

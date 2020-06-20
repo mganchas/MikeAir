@@ -9,9 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mikeair.R
 import com.example.mikeair.utils.ScopeUtils
 import com.example.model.flights.app.FlightResult
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class FlightResultsAdapter(
     context: Context,
@@ -53,7 +51,7 @@ class FlightResultsAdapter(
         fun bind(flight: FlightResult, onItemClick: (FlightResult) -> Unit)
         {
             itemView.run {
-                flightDate.text = flight.flightDate.toString()
+                flightDate.text = flight.flightDate
                 flightNumber.text = flight.flightNumber
                 duration.text = flight.duration
                 price.text = "${flight.farePrice} $currency"

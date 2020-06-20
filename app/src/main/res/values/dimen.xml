@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="loading_size">200dp</dimen>
-    <dimen name="date_input_width">50dp</dimen>
     <dimen name="margin_between_inputs">10dp</dimen>
+    <dimen name="details_text_size">18sp</dimen>
+    <dimen name="details_text_margin_top">20dp</dimen>
+    <dimen name="details_text_drawable_padding">10dp</dimen>
 </resources>
