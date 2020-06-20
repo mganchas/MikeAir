@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mikeair.R
+import com.example.mikeair.databinding.FlightResultsActivityBinding
 import com.example.mikeair.utils.ScopeUtils
 import com.example.mikeair.utils.ToastUtils
 import com.example.model.flights.api.Flight
@@ -34,10 +35,7 @@ class FlightResultsActivity : AppCompatActivity() {
         getString(R.string.intent_key_flight_details)
     }
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var toolbar: Toolbar
-    private lateinit var priceSlider : Slider
-
+    private lateinit var binding : FlightResultsActivityBinding
     private lateinit var listAdapter: FlightResultsAdapter
 
     private lateinit var flightResults: FlightResults
@@ -45,10 +43,12 @@ class FlightResultsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.flight_results_activity)
+
+        binding = FlightResultsActivityBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         getIncomingData()
-        prepareLayout()
         setToolbar()
         setSliderListener()
         fillRecyclerView()
@@ -70,17 +70,10 @@ class FlightResultsActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun prepareLayout() {
-        Log.d(TAG, "prepareLayout()")
-        recyclerView = findViewById(R.id.results)
-        toolbar = findViewById(R.id.toolbar)
-        priceSlider = findViewById(R.id.priceSlider)
-    }
-
     private fun setToolbar() {
         Log.d(TAG, "setToolbar()")
-        toolbar.title = "${flightResults.origin} -> ${flightResults.destination}"
-        setSupportActionBar(toolbar)
+        binding.toolbar.title = "${flightResults.origin} -> ${flightResults.destination}"
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setDisplayShowHomeEnabled(true)
@@ -91,8 +84,8 @@ class FlightResultsActivity : AppCompatActivity() {
         Log.d(TAG, "setSliderListener()")
 
         priceFilter = resources.getInteger(R.integer.default_price_filter).toFloat()
-        priceSlider.value = priceFilter
-        priceSlider.addOnChangeListener { _, value, fromUser ->
+        binding.priceSlider.value = priceFilter
+        binding.priceSlider.addOnChangeListener { _, value, fromUser ->
             Log.d(TAG, "setSliderListener().onValueChanged() value: $value | fromUser: $fromUser")
             if (!fromUser) {
                 return@addOnChangeListener
@@ -110,7 +103,7 @@ class FlightResultsActivity : AppCompatActivity() {
         }
         updateFlights()
 
-        recyclerView.run {
+        binding.results.run {
             adapter = listAdapter
             layoutManager = LinearLayoutManager(this@FlightResultsActivity)
             setHasFixedSize(true)

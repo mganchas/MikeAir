@@ -2,13 +2,11 @@ package com.example.mikeair.flightResults
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import com.example.mikeair.R
+import com.example.mikeair.databinding.FlightDetailsActivityBinding
 import com.example.mikeair.utils.ToastUtils
 import com.example.model.flights.app.FlightDetails
-import java.lang.Exception
 
 class FlightDetailsActivity : AppCompatActivity() {
     companion object {
@@ -19,22 +17,18 @@ class FlightDetailsActivity : AppCompatActivity() {
         getString(R.string.intent_key_flight_details)
     }
 
-    private lateinit var toolbar: Toolbar
-    private lateinit var originTextView: TextView
-    private lateinit var destinationTextView: TextView
-    private lateinit var infantsLeftTextView: TextView
-    private lateinit var fareClassTextView: TextView
-    private lateinit var discountTextView: TextView
-
+    private lateinit var binding : FlightDetailsActivityBinding
     private lateinit var flightDetails: FlightDetails
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.flight_details_activity)
-        setSupportActionBar(findViewById(R.id.toolbar))
+
+        binding = FlightDetailsActivityBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         getIncomingData()
-        prepareLayout()
         setToolbar()
         fillLayout()
     }
@@ -55,20 +49,10 @@ class FlightDetailsActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun prepareLayout() {
-        Log.d(TAG, "prepareLayout()")
-        toolbar = findViewById(R.id.toolbar)
-        originTextView = findViewById(R.id.origin)
-        destinationTextView = findViewById(R.id.destination)
-        infantsLeftTextView = findViewById(R.id.infantsLeft)
-        fareClassTextView = findViewById(R.id.fareClass)
-        discountTextView = findViewById(R.id.discount)
-    }
-
     private fun setToolbar() {
         Log.d(TAG, "setToolbar()")
-        toolbar.title = flightDetails.flightNumber
-        setSupportActionBar(toolbar)
+        binding.toolbar.title = flightDetails.flightNumber
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setDisplayShowHomeEnabled(true)
@@ -79,11 +63,11 @@ class FlightDetailsActivity : AppCompatActivity() {
         Log.d(TAG, "fillLayout()")
 
         with(flightDetails) {
-            originTextView.text = this.origin
-            destinationTextView.text = this.destination
-            infantsLeftTextView.text = this.infantsLeft.toString()
-            fareClassTextView.text = this.fareClass
-            discountTextView.text = this.discountInPercent.toString()
+            binding.origin.text = this.origin
+            binding.destination.text = this.destination
+            binding.infantsLeft.text = this.infantsLeft.toString()
+            binding.fareClass.text = this.fareClass
+            binding.discount.text = this.discountInPercent.toString()
         }
     }
 }

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.api.WebApi
 import com.example.mikeair.R
+import com.example.mikeair.databinding.FlightSearchActivityBinding
 import com.example.mikeair.extensions.toIntOrNull
 import com.example.mikeair.flightResults.FlightResultsActivity
 import com.example.mikeair.utils.ScopeUtils
@@ -40,15 +41,7 @@ class FlightSearchActivity : AppCompatActivity() {
         getString(R.string.intent_key_flight_results)
     }
 
-    private lateinit var mainLayout: ConstraintLayout
-    private lateinit var loadingLayout: FrameLayout
-    private lateinit var originStationAutoComplete: AutoCompleteTextView
-    private lateinit var destinationStationAutoComplete: AutoCompleteTextView
-    private lateinit var departureDateCalendar: CalendarView
-    private lateinit var adultsTextView: TextInputEditText
-    private lateinit var teensTextView: TextInputEditText
-    private lateinit var childrenTextView: TextInputEditText
-    private lateinit var searchButton: Button
+    private lateinit var binding: FlightSearchActivityBinding
 
     private var originStation: String? = null
     private var destinationStation: String? = null
@@ -63,32 +56,20 @@ class FlightSearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.flight_search_activity)
-        setSupportActionBar(findViewById(R.id.toolbar))
 
-        prepareLayout()
+        binding = FlightSearchActivityBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
+
         setDepartureDateCalendar()
         setSearchButton()
         getStations()
     }
 
-    private fun prepareLayout() {
-        Log.d(TAG, "prepareLayout()")
-
-        mainLayout = findViewById(R.id.parentLayout)
-        loadingLayout = findViewById(R.id.loadingLayout)
-        originStationAutoComplete = findViewById(R.id.originStationAutoComplete)
-        destinationStationAutoComplete = findViewById(R.id.destStationAutoComplete)
-        departureDateCalendar = findViewById(R.id.departureDate)
-        adultsTextView = findViewById(R.id.adultsCountEdit)
-        teensTextView = findViewById(R.id.teensCountEdit)
-        childrenTextView = findViewById(R.id.childrenCountEdit)
-        searchButton = findViewById(R.id.searchBtn)
-    }
-
     private fun setSearchButton() {
         Log.d(TAG, "setSearchButton()")
-        searchButton.setOnClickListener {
+        binding.searchBtn.setOnClickListener {
             Log.d(TAG, "setSearchButton().click()")
             fillValuesFromInputs()
             searchFlights()
@@ -99,9 +80,9 @@ class FlightSearchActivity : AppCompatActivity() {
         Log.d(TAG, "setDepartureDateCalendar()")
 
         // default value
-        departureDate = Date(departureDateCalendar.date)
+        departureDate = Date(binding.departureDate.date)
 
-        departureDateCalendar.setOnDateChangeListener { _, year, month, day ->
+        binding.departureDate.setOnDateChangeListener { _, year, month, day ->
             Log.d(TAG, "setDepartureDateCalendar().onDateChanged()")
             departureDate = Calendar.getInstance().apply {
                 set(year, month, day)
@@ -146,11 +127,11 @@ class FlightSearchActivity : AppCompatActivity() {
         val originStationsAdapter = ArrayAdapter(this, R.layout.stations_item, stationNames)
         val destStationsAdapter = ArrayAdapter(this, R.layout.stations_item, stationNames)
 
-        with(originStationAutoComplete) {
+        with(binding.originStationAutoComplete) {
             setAdapter(originStationsAdapter)
             setOnItemClickListener { _, _, i, _ -> originStation = stations[i].name }
         }
-        with(destinationStationAutoComplete) {
+        with(binding.destStationAutoComplete) {
             setAdapter(destStationsAdapter)
             setOnItemClickListener { _, _, i, _ -> destinationStation = stations[i].name }
         }
@@ -158,9 +139,9 @@ class FlightSearchActivity : AppCompatActivity() {
 
     private fun fillValuesFromInputs() {
         Log.d(TAG, "fillValuesFromInputs()")
-        adults = adultsTextView.toIntOrNull()
-        teens = teensTextView.toIntOrNull()
-        children = childrenTextView.toIntOrNull()
+        adults = binding.adultsCountEdit.toIntOrNull()
+        teens = binding.teensCountEdit.toIntOrNull()
+        children = binding.childrenCountEdit.toIntOrNull()
     }
 
     private fun searchFlights() = ScopeUtils.ioScope().launch {
@@ -378,22 +359,22 @@ class FlightSearchActivity : AppCompatActivity() {
 
     private fun enableForm() {
         Log.d(TAG, "enableForm()")
-        mainLayout.isEnabled = true
+        binding.parentLayout.isEnabled = true
     }
 
     private fun disableForm() {
         Log.d(TAG, "disableForm()")
-        mainLayout.isEnabled = false
+        binding.parentLayout.isEnabled = false
     }
 
     private fun showLoading() {
         Log.d(TAG, "showLoading()")
-        loadingLayout.visibility = View.VISIBLE
+        binding.loadingLayout.visibility = View.VISIBLE
     }
 
     private fun hideLoading() {
         Log.d(TAG, "hideLoading()")
-        loadingLayout.visibility = View.GONE
+        binding.loadingLayout.visibility = View.GONE
     }
 
     private fun getDummyData(): FlightSearch {
