@@ -10,6 +10,7 @@ import com.example.api.WebApi
 import com.example.mikeair.R
 import com.example.mikeair.databinding.FlightSearchActivityBinding
 import com.example.mikeair.extensions.toIntOrNull
+import com.example.mikeair.extensions.toUsFormat
 import com.example.mikeair.flightResults.FlightResultsActivity
 import com.example.mikeair.utils.ScopeUtils
 import com.example.mikeair.utils.ToastUtils
@@ -209,7 +210,7 @@ class FlightSearchActivity : AppCompatActivity() {
             .getFlight(
                 origin = getCodeFromStationName(originStation),
                 destination = getCodeFromStationName(destinationStation),
-                dateOut = departureDate.toString(),
+                dateOut = departureDate?.toUsFormat(),
                 dateIn = null,
                 flexDaysBeforeIn = defaultFlexDays,
                 flexDaysBeforeOut = defaultFlexDays,
@@ -308,11 +309,6 @@ class FlightSearchActivity : AppCompatActivity() {
             return false
         }
 
-        if (!isDepartureDateValid()) {
-            Log.d(TAG, "isFormValid() isDepartureDateValid: false")
-            return false
-        }
-
         if (!arePassengersValid()) {
             Log.d(TAG, "isFormValid() arePassengersValid: false")
             return false
@@ -324,8 +320,6 @@ class FlightSearchActivity : AppCompatActivity() {
     private fun isOriginStationValid() = originStation != null
 
     private fun isDestStationValid() = destinationStation != null
-
-    private fun isDepartureDateValid() = departureDate?.after(Calendar.getInstance().time) == true
 
     private fun arePassengersValid(): Boolean {
         Log.d(TAG, "arePassengersValid()")
